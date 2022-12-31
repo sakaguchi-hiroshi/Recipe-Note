@@ -15,11 +15,11 @@
         <div class="main_container">
           <div class="main_content">
             @foreach($myrecipes as $myrecipe)
-            <form action="{{ route('myrecipes.show')}}" id="myrecipe-a-form" method="get">
+            <form action="{{ route('myrecipes.show')}}" id="myrecipe-a-post" method="post">
               @csrf
               <input type="hidden" name="recipe_id" value="{{$myrecipe->id}}">
               <div class="recipe_pictures">
-                <a href="javascript:$('#myrecipe-a-form').submit()">
+                <a class="a-submit" href="#">
                   <img src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
                 </a>
               </div>
@@ -29,6 +29,10 @@
                 {{$myrecipe->url}}
               </div>
               <button type="submit">詳細</button>
+            </form>
+            
+            <form action="/myrecipes/delete">
+
             </form>
             @endforeach
           </div>

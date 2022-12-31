@@ -30,9 +30,9 @@ Route::middleware('auth')->group(function() {
     Route::group(['prefix' => '/myrecipes'], function() {
         Route::get('/form', [MyrecipeController::class, 'showForm'])->name('myrecipes.form');
         Route::post('/add', [MyrecipeController::class, 'add'])->name('myrecipes.myrecipe');
-        Route::get('/show', [MyrecipeController::class, 'show'])->name('myrecipes.show');
-        // Route::post('/delete', [MyrecipeController::class, 'delete']);
-        // Route::post('/update', [MyrecipeController::class, 'update']);
+        Route::post('/show', [MyrecipeController::class, 'show'])->name('myrecipes.show');
+        Route::post('/delete', [MyrecipeController::class, 'delete']);
+        Route::post('/update', [MyrecipeController::class, 'update']);
         Route::get('/{value}', [MyrecipeController::class, 'index'])->name('myrecipes.myrecipe');
     });
 });
