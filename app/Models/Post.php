@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Bookmark;
 
 class Post extends Model
 {
@@ -14,22 +15,25 @@ class Post extends Model
     public static $rules = array(
         'user_id' => 'required',
         'myrecipe__colection_id' => 'required',
-        'describe' => 'required',
     );
 
     public function user(){
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function myrecipe_colection(){
-        return $this->belongsTo('App\Models\Myrecipe_colection');
+        return $this->belongsTo('App\Models\Myrecipe_colection', 'myrecipe__colection_id');
     }
 
     public function bookmarks(){
-        return $this->hasMany('App\Models\Bookmark');
+        return $this->hasMany('App\Models\Bookmark', 'post_id');
     }
 
     public function reports(){
-        return $this->hasMany('App\Models\Report');
+        return $this->hasMany('App\Models\Report', 'post_id');
+    }
+
+    public function isLikedBy($user): bool {
+        return Bookmark::where('user_id', $user->id)->where('post_id', $this->id)->first() !== null;
     }
 }

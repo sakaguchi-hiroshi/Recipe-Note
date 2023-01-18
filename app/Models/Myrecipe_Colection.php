@@ -29,6 +29,6 @@ class Myrecipe_Colection extends Model
     }
 
     public function posts(){
-        return $this->hasMany('App\Models\Post', 'post_id');
+        return $this->hasMany('App\Models\Post', 'myrecipe__colection_id');
     }
 }

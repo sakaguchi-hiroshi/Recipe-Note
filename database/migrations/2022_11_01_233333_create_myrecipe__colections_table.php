@@ -15,9 +15,9 @@ class CreateMyrecipeColectionsTable extends Migration
     {
         Schema::create('myrecipe__colections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('image_id')->nullable()->constrained('images');
-            $table->foreignId('movie_id')->nullable()->constrained('movies');
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('image_id')->nullable()->constrained('images')->nullOnDelete();
+            $table->foreignId('movie_id')->nullable()->constrained('movies')->nullOnDelete();
             $table->string('title');
             $table->text('recipe')->nullable();
             $table->string('url')->nullable();

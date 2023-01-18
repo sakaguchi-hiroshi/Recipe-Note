@@ -22,6 +22,6 @@ class Image extends Model
     }
 
     public function myrecipe_colections(){
-        return $this->hasMany('App\Models\Myrecipe_Colection', 'myrecipe__colection_id');
+        return $this->hasMany('App\Models\Myrecipe_Colection', 'image_id');
     }
 }

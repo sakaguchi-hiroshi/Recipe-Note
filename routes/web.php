@@ -20,47 +20,43 @@ use App\Http\Controllers\ManagementController;
 |
 */
 
-Route::get('/', [RecipeNoteController::class, 'index']);
+Route::get('/', [RecipeNoteController::class, 'index'])->name('recipenotes.index');
 
-Route::get('/services/premium', [RecipeNoteController::class, 'showPremiumService']);
+Route::get('/services/premium', [RecipeNoteController::class, 'showPremiumService'])->name('recipenotes.service');
 
 Route::middleware('auth')->group(function() {
+
     Route::get('/logout', [AuthController::class,'getLogout']);
 
     Route::group(['prefix' => '/myrecipes'], function() {
         Route::get('/form', [MyrecipeController::class, 'showForm'])->name('myrecipes.form');
-        Route::post('/add', [MyrecipeController::class, 'add'])->name('myrecipes.myrecipe');
+        Route::post('/add', [MyrecipeController::class, 'add']);
+        Route::post('/image/delete', [MyrecipeController::class, 'imageDelete']);
+        Route::post('/movie/delete', [MyrecipeController::class, 'movieDelete']);
         Route::post('/show', [MyrecipeController::class, 'show'])->name('myrecipes.show');
-        Route::post('/delete', [MyrecipeController::class, 'delete']);
+        Route::get('/edit', [MyrecipeController::class, 'edit'])->name('myrecipes.edit');
+        Route::post('/edit', [MyrecipeController::class, 'edit'])->name('myrecipes.edit');
         Route::post('/update', [MyrecipeController::class, 'update']);
+        Route::post('/delete', [MyrecipeController::class, 'delete']);
         Route::get('/{value}', [MyrecipeController::class, 'index'])->name('myrecipes.myrecipe');
     });
+
+    Route::group(['prefix' => '/posts'], function() {
+        Route::get('/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
+        Route::post('/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
+        Route::post('/add', [PostController::class, 'add']);
+        Route::post('/delete', [PostController::class, 'delete']);
+        Route::get('/bookmark/order', [PostController::class, 'showBookmarkOrder'])->name('posts.order');
+        // Route::get('/access/order', [PostController::class, 'showAccessOrder']);
+        Route::get('/{value}', [PostController::class, 'index'])->name('posts.post');
+    });
+
+    Route::post('/bookmarks/bookmark', [BookmarkController::class, 'bookmark']);
+    Route::get('/reports/form', [ReportController::class, 'showform'])->name('reports.form');
+    Route::post('/reports/form', [ReportController::class, 'showform'])->name('reports.form');
+    Route::post('/reports/add', [ReportController::class, 'add']);
 });
-// Route::group(['prefix' => '/posts'], function() {
-//     Route::get('', [PostController::class, 'index']);
-//     Route::get('/form', [PostController::class, 'showForm']);
-//     Route::post('/form', [PostController::class, 'send']);
-//     Route::post('/add', [PostController::class, 'add']);
-//     Route::post('/delete', [PostController::class, 'delete']);
-//     Route::post('/update', [PostController::class, 'update']);
-//     Route::get('/recipe', [PostController::class, 'showPostRecipe']);
-//     Route::get('/movie', [PostController::class, 'showPostMovie']);
-//     Route::get('/report/order', [PostController::class, 'showReportOrder']);
-//     Route::get('/access/order', [PostController::class, 'showAccessOrder']);
-// });
-// Rout::group(['prefix' => '/bookmarks'], function() {
-//     Route::get('', [BookmarkController::class, 'index']);
-//     Route::get('/show', [BookmarkController::class, 'show']);
-//     Route::post('/add', [BookmarkController::class, 'add']);
-//     Route::post('/delete', [BookmarkController::class, 'delete']);
-// });
-// Route::group(['prefix' => '/reports'], function() {
-//     Route::get('', [ReportController::class, 'showForm']);
-//     Route::post('', [ReportController::class, 'send']);
-//     Route::post('/add', [ReportController::class, 'add']);
-//     Route::post('/delete', [ReportController::class, 'delete']);
-//     Route::post('/update', [ReportController::class, 'update']);
-// });
+Route::get('/managements', [ManagementController::class, 'index'])->name('managements.manage');
 // Route::group(['prefix' => '/managements'], function() {
 //     Route::get('/post', [ManagementController::class, 'showPost']);
 //     Route::post('/post', [ManagementController::class, 'searchPost']);

@@ -52,22 +52,34 @@ class User extends Authenticatable
     );
 
     public function images(){
-        return $this->hasMany('App\Models\Image', 'image_id');
+        return $this->hasMany('App\Models\Image', 'user_id');
     }
 
     public function movies(){
-        return $this->hasMany('App\Models\Movie', 'movie_id');
+        return $this->hasMany('App\Models\Movie', 'user_id');
+    }
+
+    public function posts(){
+        return $this->hasMany('App\Models\Post', 'user_id');
     }
 
     public function myrecipe_colections(){
-        return $this->hasMany('App\Models\Myrecipe_Colection', 'myrecipe__colection_id');
+        return $this->hasMany('App\Models\Myrecipe_Colection', 'user_id');
     }
 
     public function bookmarks(){
-        return $this->hasMany('App\Models\Bookmark', 'bookmark_id');
+        return $this->hasMany('App\Models\Bookmark', 'user_id');
     }
 
     public function reports(){
-        return $this->hasMany('App\Models\Report', 'report_id');
+        return $this->hasMany('App\Models\Report', 'user_id');
+    }
+
+    public function permission(){
+        return $this->belongsTo('App\Models\Permission', 'permission_id');
+    }
+
+    public function isManager($user): bool {
+        return User::where('id', $user->id)->where('permission_id', $user->permission_id)->first() !== null;
     }
 }

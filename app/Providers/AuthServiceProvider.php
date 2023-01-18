@@ -25,6 +25,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('manager_only', function ($user) {
+            return ($user->permission_id == 3);
+        });
+
+        Gate::define('premium', function ($user) {
+            return ($user->permission_id >= 2);
+        });
+
+        Gate::define('all', function ($user) {
+            return ($user->permission_id >= 1);
+        });
     }
 }

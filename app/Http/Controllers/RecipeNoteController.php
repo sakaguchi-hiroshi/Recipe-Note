@@ -3,18 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Myrecipe_Colection;
+use App\Models\Post;
 
 class RecipeNoteController extends Controller
 {
     public function index()
     {
-        // $randomPosts = Post::inRandomOrder()->take(0,10)->get();
-        // return view('index', ['randomPost' => $randomPost]);
-        return view('index');
+        $randomPosts_id = Post::select('myrecipe__colection_id')->inRandomOrder()->take(4)->get();
+        $posts = Myrecipe_colection::whereIn('id', $randomPosts_id)->get();
+        return view('recipenotes.index', ['posts' => $posts]);
     }
 
     public function showPremiumService()
     {
-        return view('service');
+        return view('recipenotes.service');
     }
 }

@@ -11035,13 +11035,31 @@ return jQuery;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./resources/js/aform.js ***!
-  \*******************************/
+/*!**********************************!*\
+  !*** ./resources/js/bookmark.js ***!
+  \**********************************/
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(function () {
-  $('.a-submit').click(function () {
-    $('#a-post').submit();
+  var like = $('.like-toggle');
+  var likePostId;
+  like.on('click', function () {
+    var $this = $(this);
+    likePostId = $this.data('post-id');
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      url: '/bookmarks/bookmark',
+      method: 'POST',
+      data: {
+        'post_id': likePostId
+      }
+    }).done(function (data) {
+      $this.toggleClass('liked');
+      $this.next('.like-counter').html(data.post_likes_count);
+    }).fail(function () {
+      console.log('fail');
+    });
   });
 });
 })();

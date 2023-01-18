@@ -22,6 +22,6 @@ class Movie extends Model
     }
 
     public function myrecipe_colections(){
-        return $this->hasMany('App\Models\Myrecipe_Colection', 'myrecipe__colection_id');
+        return $this->hasMany('App\Models\Myrecipe_Colection', 'movie_id');
     }
 }
