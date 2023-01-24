@@ -38,9 +38,7 @@
                 @endif
                 @if(isset($myrecipe->movie))
                 <div class="movie-area">
-                  <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
-                    <video preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
-                  </a>
+                  <video preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
                 </div>
                 @endif
               </div>

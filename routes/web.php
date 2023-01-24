@@ -46,8 +46,8 @@ Route::middleware('auth')->group(function() {
         Route::post('/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
         Route::post('/add', [PostController::class, 'add']);
         Route::post('/delete', [PostController::class, 'delete']);
-        Route::get('/bookmark/order', [PostController::class, 'showBookmarkOrder'])->name('posts.order');
-        // Route::get('/access/order', [PostController::class, 'showAccessOrder']);
+        Route::get('/bookmark/order', [PostController::class, 'showBookmarkOrder'])->name('posts.orders.bookmark');
+        Route::get('/access/order', [PostController::class, 'showAccessOrder']);
         Route::get('/{value}', [PostController::class, 'index'])->name('posts.post');
     });
 
@@ -56,8 +56,9 @@ Route::middleware('auth')->group(function() {
     Route::post('/reports/form', [ReportController::class, 'showform'])->name('reports.form');
     Route::post('/reports/add', [ReportController::class, 'add']);
 });
-Route::get('/managements', [ManagementController::class, 'index'])->name('managements.manage');
-// Route::group(['prefix' => '/managements'], function() {
+Route::group(['prefix' => '/managements'], function() {
+    Route::get('', [ManagementController::class, 'index'])->name('managements.manage');
+    Route::get('/more', [ManagementController::class, 'getMore']);
 //     Route::get('/post', [ManagementController::class, 'showPost']);
 //     Route::post('/post', [ManagementController::class, 'searchPost']);
 //     Route::post('/post/delete', [ManagementController::class, 'deletePost']);
@@ -65,7 +66,7 @@ Route::get('/managements', [ManagementController::class, 'index'])->name('manage
 //     Route::post('/report', [ManagementController::class, 'showReport']);
 //     Route::post('/report/delete', [ManagementController::class, 'deleteReport']);
 //     Route::post('/report/update', [ManagementController::class, 'updateReport']);
-// });
+});
 
 Route::get('/register', [AuthController::class,'getRegister']);
 Route::post('/register', [AuthController::class,'postRegister']);

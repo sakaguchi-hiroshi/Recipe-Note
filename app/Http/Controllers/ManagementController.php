@@ -11,25 +11,28 @@ class ManagementController extends Controller
 {
     public function index(Request $request)
     {
+        return view('managements.manage');
+    }
+    
+    public function getMore(Request $request)
+    {
         $indicateContent = $request->indicate_content;
         
-        if(empty($indicateContent)) {
-            return view('managements.manage');
-        }
-
         if($indicateContent == 'user') {
-            $items = User::latest()->get();
+            $items = User::get();
         }
         
         if($indicateContent == 'post') {
             $items = Post::latest()->get();
         }
+
         $param = [
             'indicateContent' => $indicateContent,
             'items' => $items,
         ];
+
         return response()->json([
-            'list' => view('managements.manage', $param)->render(),
+            'list' => view('managements.manage_ajax', $param)->render()
         ]);
     }
 }

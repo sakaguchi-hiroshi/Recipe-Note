@@ -27,21 +27,28 @@
               @csrf
               <input type="hidden" name="recipe_id" value="{{$post->id}}">
               <div class="recipe_pictures">
+                @if($value == 'post')
                 <div class="image-area">
                   <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
-                    <img src="{{ asset('storage/'.$post->image->path)}}" alt="レシピの画像">
+                    <img src="{{ asset('storage/'.$post->myrecipe_colection->image->path)}}" alt="レシピの画像">
                   </a>
                 </div>
+                @endif
+                @if($value == 'movie')
+                <div class="movie-area">
+                  <video preload controls src="{{ asset('storage/'.$post->myrecipe_colection->movie->path)}}" alt="レシピの動画"></video>
+                </div>
+                @endif
               </div>
               <div class="recipe_texts">
                 <p class="recipe-title">
                   <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
-                    {{$post->myrecipe_colecttion->title}}
+                    {{$post->myrecipe_colection->title}}
                   </a>
                 </p>
                 <p class="recipe">
                   <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
-                    {{$post->myrecipe_colecttion->recipe}}
+                    {{$post->myrecipe_colection->recipe}}
                   </a>
                 </p>
               </div>

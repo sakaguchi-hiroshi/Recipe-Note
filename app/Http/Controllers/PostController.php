@@ -7,19 +7,30 @@ use App\Http\Requests\PostRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Myrecipe_Colection;
 use App\Models\Post;
+use App\Services\RankingService;
 
 class PostController extends Controller
 {
 
     public function index(Post $post, $value)
     {
-        $posts_id = Post::latest()->pluck('myrecipe__colection_id');
-        $posts = Myrecipe_Colection::whereIn('id', $posts_id)->with('image', 'movie')->get();
-        $params = [
+        if($value == 'post') {
+            $posts = $post->latest()->get();
+        }
+
+        if($value == 'movie') {
+            $posts = $post->with('myrecipe_colection.movie')
+            ->whereHas('myrecipe_colection.movie', function($q) {
+                $q->whereExists(function($q){
+                    return $q;
+                });
+            })->get();
+        }
+        $param = [
             'posts' => $posts,
             'value' => $value,
         ];
-        return view('posts.post', $params);
+        return view('posts.post', $param);
     }
 
     public function confirm(Request $request)
@@ -63,7 +74,15 @@ class PostController extends Controller
     {
         if(isset($post)){
             $posts = $post->withCount('bookmarks')->orderBy('bookmarks_count', 'desc')->paginate(5);
-            return view('posts.order', ['posts' => $posts]);
+            return view('posts.orders.bookmark', ['posts' => $posts]);
         }
+    }
+
+    public function showAccessOrder(Post $post)
+    {
+        $ranking = new RankingService;
+        $results = $ranking->getRankingAll();
+        $post_recipe_rankings = $post->getPostRecipeRanking($results);
+        return view('posts.orders.access', ['post_recipe_rankings' => $post_recipe_rankings]);
     }
 }

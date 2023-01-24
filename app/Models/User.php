@@ -80,6 +80,7 @@ class User extends Authenticatable
     }
 
     public function isManager($user): bool {
-        return User::where('id', $user->id)->where('permission_id', $user->permission_id)->first() !== null;
+        return User::where('id', $user->id)->where('permission_id', 3)->first() !== null;
     }
 }
+

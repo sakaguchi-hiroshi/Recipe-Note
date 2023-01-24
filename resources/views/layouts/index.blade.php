@@ -7,9 +7,6 @@
   <title>@yield('title')</title>
   <link rel="stylesheet" href="{{ asset('/assets/css/reset.css')}}">
   <link rel="stylesheet" href="{{ asset('/assets/css/index.css')}}">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="{{ mix('js/bookmark.js') }}"></script>
-  <script src="https://kit.fontawesome.com/b8e0fd0230.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="header">
@@ -17,11 +14,16 @@
       <div class="header_inner">
         <div class="user_navi">
           <a href="{{ url('/services/premium')}}" class="ps_link">プレミアムサービス</a>
+          @guest
           <a href="/register" class="register_link">会員登録</a>
           <a href="/login" class="login_link">ログイン</a>
+          @endguest
+          @auth
+          <a href="/logout" class="logout_link">ログアウト</a>
           @if(Auth::user()->isManager(Auth::user()))
           <a href="{{ route('managements.manage')}}">管理者画面</a>
           @endif
+          @endauth
         </div>
       </div>
     </div>
@@ -48,5 +50,8 @@
   <footer class="footer">
     <small class="copyright">Copyright© RecipeNote Inc.</small>
   </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{{ mix('js/index.js') }}"></script>
+  <script src="https://kit.fontawesome.com/b8e0fd0230.js" crossorigin="anonymous"></script>
 </body>
 </html>

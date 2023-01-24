@@ -11035,13 +11035,30 @@ return jQuery;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./resources/js/index.js ***!
-  \*******************************/
+/*!********************************!*\
+  !*** ./resources/js/manage.js ***!
+  \********************************/
 /* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 $(function () {
-  $('form').submit(function () {
-    $(this).find(':submit').prop('disabled', 'true');
+  var indicateContent;
+  $('.indicate-btn').on('click', function (event) {
+    event.preventDefault();
+    var $this = $(this);
+    indicateContent = $this.data('indicate-content');
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      url: '/managements/more',
+      type: 'get',
+      data: {
+        'indicate_content': indicateContent
+      }
+    }).done(function (data) {
+      $('.result').html(data['list']);
+    }).fail(function () {
+      alert('error');
+    });
   });
 });
 })();

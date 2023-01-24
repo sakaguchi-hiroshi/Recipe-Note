@@ -7,10 +7,6 @@
   <title>@yield('title')</title>
   <link rel="stylesheet" href="{{ asset('/assets/css/reset.css')}}">
   <link rel="stylesheet" href="{{ asset('/assets/css/index.css')}}">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="{{ mix('js/bookmark.js') }}"></script>
-  <script src="https://kit.fontawesome.com/b8e0fd0230.js" crossorigin="anonymous"></script>
-
 </head>
 <body>
   <header class="header">
@@ -35,5 +31,8 @@
   <footer class="footer">
     <small class="copyright">Copyright© RecipeNote Inc.</small>
   </footer>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="{{ mix('js/index.js') }}"></script>
+  <script src="https://kit.fontawesome.com/b8e0fd0230.js" crossorigin="anonymous"></script>
 </body>
 </html>

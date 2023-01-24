@@ -1,7 +1,6 @@
 @extends('layouts.index')
   @section('title', 'Recipe Note')
   @section('my_menu')
-    
     <a href="{{ route('myrecipes.myrecipe', ['value' => 'myrecipe']) }}" class="mr_link">マイレシピ</a>
     <a href="{{ route('myrecipes.form')}}" class="wr_link">レシピを書く</a>
   @endsection
@@ -23,7 +22,7 @@
           </h2>
           <ul class="services">
             <li class="reports-order">
-              <a href="{{ route('posts.order')}}">人気順検索</a>
+              <a href="{{ route('posts.orders.bookmark')}}">人気順検索</a>
             </li>
             <li class="accesses-order">
               <a href="/posts/access/order">レシピランキング</a>
@@ -38,7 +37,7 @@
               <input type="hidden" name="recipe_id" value="{{$post->id}}">
               <div class="recipe_pictures">
                 <div class="image-area">
-                  <a name="asend" href="javascript:apost[{{$loop->index}}].submit()">
+                  <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
                     <img src="{{ asset('storage/'.$post->image->path)}}" alt="レシピの画像">
                   </a>
               </div>
@@ -61,7 +60,4 @@
         </div>
       </div>
     </section>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="{{ mix('js/bookmark.js') }}"></script>
-    <script src="https://kit.fontawesome.com/b8e0fd0230.js" crossorigin="anonymous"></script>
   @endsection

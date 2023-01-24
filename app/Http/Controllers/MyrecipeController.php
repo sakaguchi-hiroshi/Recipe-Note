@@ -12,6 +12,7 @@ use App\Models\Post;
 use App\Models\Bookmark;
 use App\Models\Report;
 use Illuminate\Support\Facades\Storage;
+use App\Services\RankingService;
 
 class MyrecipeController extends Controller
 {
@@ -107,11 +108,13 @@ class MyrecipeController extends Controller
     public function show(Request $request)
     {
         $user_id = Auth::id();
-        $recipe_id = $request->id;
+        $recipe_id = $request->recipe_id;
         $myrecipe = Myrecipe_Colection::where('id', $request->recipe_id)->with('image', 'movie')->first();
 
         if($myrecipe->posts()->exists()) {
             foreach($myrecipe->posts as $post)
+            $ranking = new RankingService;
+            $ranking->incrementViewRanking($post->id);
             
             if($post->reports()->exists()) {
                 foreach($post->reports as $report)
@@ -121,18 +124,19 @@ class MyrecipeController extends Controller
                     'post' => $post,
                     'report' => $report,
                 ];
-                return view('myrecipes.show', $param);
             }else {
                 $post = Post::withCount('bookmarks')->find($post->id);
                 $param = [
                     'myrecipe' => $myrecipe,
                     'post' => $post,
                 ];
-                return view('myrecipes.show', $param);
             }
         }else {
-            return view('myrecipes.show', ['myrecipe' => $myrecipe]);
+            $param = [
+                'myrecipe' => $myrecipe,
+            ];
         }
+        return view('myrecipes.show', $param);
     }
 
     public function delete(Request $request)
