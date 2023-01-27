@@ -62,10 +62,6 @@ Route::group(['prefix' => '/managements'], function() {
 //     Route::get('/post', [ManagementController::class, 'showPost']);
 //     Route::post('/post', [ManagementController::class, 'searchPost']);
 //     Route::post('/post/delete', [ManagementController::class, 'deletePost']);
-//     Route::post('/post/update', [ManagementController::class, 'updatePost']);
-//     Route::post('/report', [ManagementController::class, 'showReport']);
-//     Route::post('/report/delete', [ManagementController::class, 'deleteReport']);
-//     Route::post('/report/update', [ManagementController::class, 'updateReport']);
 });
 
 Route::get('/register', [AuthController::class,'getRegister']);

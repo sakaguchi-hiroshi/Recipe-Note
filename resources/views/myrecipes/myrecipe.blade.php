@@ -29,7 +29,7 @@
               <div class="recipe_pictures">
                 @if(isset($myrecipe->image))
                 <div class="image-area">
-                  <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
+                  <a name="asubmit" href="javascript:apost[@json($loop->index)].submit();">
                     <img src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
                   </a>
                 </div>
@@ -44,7 +44,7 @@
               </div>
               <div class="recipe_texts">
                 <p class="recipe-title">
-                  <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
+                  <a name="asubmit" href="javascript:apost[@json($loop->index)].submit()">
                     {{$myrecipe->title}}
                   </a>
                 </p>
@@ -57,7 +57,7 @@
                 @endif
                 @if(isset($myrecipe->recipe))
                 <p class="recipe">
-                  <a name="asubmit" href="javascript:apost[{{$loop->index}}].submit()">
+                  <a name="asubmit" href="javascript:apost[@json($loop->index)].submit()">
                     {{$myrecipe->recipe}}
                   </a>
                 </p>
