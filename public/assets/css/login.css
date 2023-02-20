@@ -1,0 +1,103 @@
+/* 
+header
+ */
+
+.header-section {
+  margin: 1rem 1.5rem 1.5rem;
+  display: flex;
+}
+
+.user-navi {
+  margin: 0 0 0 auto;
+}
+
+.header-section-secondary {
+  margin-bottom: 3rem;
+}
+
+.header-section a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem;
+  color: #EB455F;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.header-headline .home-link {
+  color: #EB455F;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 
+main
+*/
+
+.flash_message {
+  font-size: 1.2em;
+  color: red;
+  margin-bottom: 3rem;
+}
+.main-headline {
+  font-size: 1.5em;
+  margin-bottom: 3rem;
+}
+.auth-form {
+  font-size: 1.2em;
+  width: 40%;
+}
+.auth-form-container {
+  margin-bottom: 3rem;
+}
+.auth-form-container input {
+  width: 100%;
+  height: 35px;
+}
+.auth-form-container input[type="email"], input[type="password"] {
+  font-size: 1.2em;
+}
+.error-message {
+  color: red;
+}
+.auth-form-btn {
+  font-size: 1.2em;
+  margin-bottom: 5rem;
+}
+.transition-container {
+  width: 40%;
+  text-align: center;
+}
+.transition-txt {
+  margin-bottom: 1rem;
+}
+.transition-link {
+  display: block;
+}
+
+/* 
+レスポンシブ 
+*/
+
+@media screen and (max-width: 768px) {
+  //
+}
+
+@media screen and (max-width: 480px) {
+  /* header */
+  .user-navi a {
+    padding: 0;
+  }
+  /* main */
+  .main-section {
+    text-align: center;
+  }
+  .auth-form {
+    margin: 0 auto;
+  }
+  .transition-container {
+    margin: 0 auto;
+  }
+}

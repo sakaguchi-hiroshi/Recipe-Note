@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('updated_at')->useCurrent()->nullable();
         });
     }
+    
 
     /**
      * Reverse the migrations.

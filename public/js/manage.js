@@ -11061,6 +11061,32 @@ $(function () {
     });
   });
 });
+$(function () {
+  var indicateContent;
+  $('.search-btn').on('click', function () {
+    var $this = $(this);
+    indicateContent = $this.data('indicate-content');
+    var keyword = $('.keyword').val();
+    if (!keyword) {
+      return false;
+    }
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      url: '/managements/search',
+      type: 'get',
+      data: {
+        'indicate_content': indicateContent,
+        'keyword': keyword
+      }
+    }).done(function (data) {
+      $('.result').html(data['list']);
+    }).fail(function () {
+      alert('error');
+    });
+  });
+});
 })();
 
 /******/ })()

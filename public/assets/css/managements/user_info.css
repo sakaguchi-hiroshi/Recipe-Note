@@ -1,0 +1,105 @@
+/* 
+header
+ */
+
+.header-section {
+  margin: 1rem 1.5rem 1.5rem;
+  display: flex;
+}
+.user-navi {
+  margin: 0 0 0 auto;
+}
+.header-section-secondary {
+  margin-bottom: 3rem;
+}
+.header-section a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem;
+  color: #EB455F;
+  border-radius: 20px;
+  font-weight: bold;
+}
+.header-headline .home-link {
+  color: #EB455F;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 
+main
+*/
+
+.main-section-headline {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+table {
+  width: 100%;
+  margin-bottom: 10rem;
+}
+
+.user-table-row {
+  padding: 2rem 0;
+}
+table th {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1.2em;
+}
+.user-table-data {
+  font-size: 1.2em;
+  text-align: center;
+  padding: 7px 0;
+}
+.recipe-figure-image {
+  border-radius: 3px;
+  width: 50%;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+.recipe-headline {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+.recipe-caption {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  margin-bottom: 0.3rem;
+}
+.recipe-form {
+  margin-bottom: 5rem;
+}
+.paginate {}
+
+/* 
+レスポンシブ 
+*/
+
+@media screen and (max-width: 768px) {
+  /* main */
+  section.main-section, .paginate {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* header */
+  .user-navi a {
+    padding: 0;
+  }
+  /* main */
+  .recipe-figure-image {
+    height: 100px;
+  }
+}

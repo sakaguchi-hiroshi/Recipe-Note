@@ -1,0 +1,86 @@
+/* Base style */
+
+body {
+  font-family: 'Noto Sans JP', "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #2B3467;
+  background-color: #FCFFE7;
+  width: 100%;
+}
+a {
+  text-decoration: none;
+  color: #2B3467;
+}
+
+/* 
+header 
+*/
+
+.header {
+  width: 85%;
+  margin: 0 auto;
+  border-bottom: solid 1px #2B3467;
+}
+
+/* 
+main
+ */
+
+.main {
+  width: 85%;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+svg .w-5, .h-5 {
+  width: 30px;
+  height: 30px;
+}
+
+/* 
+footer
+ */
+
+.footer {
+  height: 100px;
+  background-color: #2B3467;
+  color: #FCFFE7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 
+レスポンシブ
+ */
+
+@media screen and (max-width: 768px) {
+  /* Base */
+  body {
+    font-size: 12px;
+  }
+  /* header */
+  .header {
+    width: 100%;
+  }
+  /* main */
+  .main {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* Base */
+  body {
+    font-size: 10px;
+  }
+  /* header */
+  .header {
+    width: 100%;
+  }
+  /* main */
+  .main {
+    width: 100%;
+  }
+}

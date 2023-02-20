@@ -35,13 +35,4 @@ class RankingService
     }
     return $results;
   }
-
-  // public function getPostRecipeRanking(Array $results)
-  // {
-  //   $post_recipe_ids = array_keys($results);
-  //   $ids_order = implode(',', $post_recipe_ids);
-  //   $post_recipe_ranking = $this->whereIn('id', $post_recipe_ids)
-  //                               ->orderByRaw(DB::raw("FIELD(id, $ids_order)"))
-  //                               ->paginate(10);
-  // }
 }

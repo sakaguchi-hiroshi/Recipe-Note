@@ -42,8 +42,7 @@ class Post extends Model
         $post_recipe_ids = array_keys($results);
         $ids_order = implode(',', $post_recipe_ids);
         $post_recipe_ranking = $this->whereIn('id', $post_recipe_ids)
-                                    ->orderByRaw("FIELD(id, $ids_order)")
-                                    ->paginate(10);
+                                    ->orderByRaw("FIELD(id, $ids_order)");
         return $post_recipe_ranking;
     }
 }

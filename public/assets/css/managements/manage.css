@@ -1,0 +1,108 @@
+/* 
+header
+ */
+
+.header-section {
+  margin: 1rem 1.5rem 1.5rem;
+  display: flex;
+}
+
+.user-navi {
+  margin: 0 0 0 auto;
+}
+
+.header-section-secondary {
+  margin-bottom: 3rem;
+}
+
+.header-section a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem;
+  color: #EB455F;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.header-headline .home-link {
+  color: #EB455F;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 
+main
+*/
+
+.main-section-headline {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+.search-form {
+  text-align: center;
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.keyword {
+  width: 30%;
+  height: 2rem;
+}
+.search-btn {
+  height: 2.3rem;
+  margin-left: 1rem;
+}
+.clear-btn {
+  font-size: 13.3px;
+  padding: 7px 6px;
+  background-color: #efefef;
+  border: solid 1px #000;
+  border-radius: 3px;
+  margin-left: 1rem;
+}
+table {
+  width: 100%;
+  margin-bottom: 10rem;
+}
+.user-table-row {
+  padding: 2rem 0;
+}
+table th {
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1.2em;
+}
+.user-table-data {
+  font-size: 1.2em;
+  text-align: center;
+  padding: 7px 0;
+}
+.message {
+  text-align: center;
+  font-size: 1.3em;
+}
+.paginate {}
+
+/* 
+レスポンシブ 
+*/
+
+@media screen and (max-width: 768px) {
+  /* main */
+  section.main-section, .paginate {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* header */
+  .user-navi a {
+    padding: 0;
+  }
+}

@@ -29,20 +29,5 @@ class BookmarkController extends Controller
             'post_likes_count' => $post_likes_count,
         ];
         return response()->json($param);
-        // $recipe = Post::where('myrecipe__colection_id', $request->recipe_id)->first();
-        // Bookmark::create([
-        //     'user_id' => $user_id,
-        //     'myrecipe__colection_id' => $recipe->id,
-        // ]);
-        // return redirect(route('posts.post', ['value' => 'post']));
-    }
-
-    public function delete(Request $request)
-    {
-        $user_id = Auth::id();
-        $post_id = Post::where('myrecipe__colection_id', $request->id)->first()->id;
-        $recipe = Bookmark::where('user_id', $user_id)
-        ->where('post_id', $post_id)->delete();
-        return redirect(route('posts.post', ['value' => 'post']));
     }
 }

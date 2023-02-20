@@ -20,6 +20,10 @@ class Report extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
+    public function image(){
+        return $this->belongsTo('App\Models\Image', 'image_id');
+    }
+
     public function post(){
         return $this->belongsTo('App\Models\Post', 'post_id');
     }

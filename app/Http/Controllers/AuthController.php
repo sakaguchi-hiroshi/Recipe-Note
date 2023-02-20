@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function postRegister(RegisterRequest $request)
     {
         try {
-            user::create([
+            $user = user::create([
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => Hash::make($request['password']),
@@ -44,6 +44,7 @@ class AuthController extends Controller
             return redirect('login')->with('result', 'メールアドレスまたはパスワードが間違っています');
         }
     }
+    
 
     public function getLogout()
     {

@@ -1,0 +1,94 @@
+/* 
+header
+ */
+
+.header-section {
+  margin: 1rem 1.5rem 1.5rem;
+  display: flex;
+}
+
+.user-navi {
+  margin: 0 0 0 auto;
+}
+
+.header-section-secondary {
+  margin-bottom: 3rem;
+}
+
+.header-section a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 1rem;
+  color: #EB455F;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.header-headline .home-link {
+  color: #EB455F;
+  font-size: 2em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* 
+main
+*/
+
+.main-section-headline {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+.form-group {
+  font-size: 1.2em;
+  margin-bottom: 2rem;
+}
+.form-label {
+  display: inline-block;
+  width: 30%;
+}
+.form-input {
+  width: 30%;
+  height: 30px;
+}
+.form-textarea {
+  display: block;
+  width: 60%;
+  height: 300px;
+}
+.error-message {
+  color: red
+}
+
+/* 
+レスポンシブ 
+*/
+
+@media screen and (max-width: 768px) {
+  /* main */
+  section.main-section {
+    text-align: center;
+    margin: 0 auto;
+  }
+  .form-group {
+    width: 60%;
+    margin: 0 auto 2rem;
+  }
+  .form-label, .form-input {
+    display: block;
+  }
+  .form-label, .form-input, .form-textarea {
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* header */
+  .user-navi a {
+    padding: 0;
+  }
+}

@@ -1,65 +1,52 @@
-@extends('layouts.service')
-  @section('title', 'プレミアムサービスの内容')
-  @section('header')
-  <h1 class="header_title"><a href="/" class="home">Recipe Note</a></h1>
-  <div class="header_ps_register">
-    <a href="" class="ps_register_link">登録する</a>
-  </div>
-  <ul class="link_list">
-    <li>
-      <a href="">できること</a>
-    </li>
-    <li>
-      <a href="">機能比較表</a>
-    </li>
-  </ul>
+@extends('layouts.app')
+  @section('title', 'プレミアムサービス')
+  @section('pageCss')
+    <link rel="stylesheet" href="{{ asset('/assets/css/recipenotes/service.css')}}">
   @endsection
+  @include('layouts.header.first')
+  @include('layouts.header.second_ttl_only')
   @section('main')
-  <section class="contents">
-    <div class="box">
-      <div class="main_form">
-        <h2 class="main_form_title">プレミアムサービス</h2>
-        <div class="main_form_ps_register">
-          <a href="" class="ps_register_link">登録する</a>
-        </div>
+    <section class="main-section">
+      <h2 class="section-headline">プレミアムサービス</h2>
+      <div class="regist-btn">
+        <a href="" class="regist-link">登録する</a>
       </div>
-      <div class="ps_features">
-        <h3 class="ps_features_heading">プレミアムサービスでできること</h3>
-        <div class="ps_features_row">
-          <div class="ps_features_column">
-            <h4 class="ps_features_subheading">人気のレシピがすぐ見つかる！</h4>
-            <p class="ps_features_paragraph">「人気順検索」や「レシピアクセス数ランキング」で美味しいレシピやみんなのおすすめレシピがすぐに見つかる！自慢の料理のレパートリーが増えより一層料理が楽しくなる！</p>
+      <div class="features">
+        <h3 class="features-headline">プレミアムサービスでできること</h3>
+        <div class="features-row">
+          <div class="feature-column-2">
+            <h4 class="feature-column-headline">人気のレシピがすぐ見つかる！</h4>
+            <p class="feature-column-text">「人気順ランキング」や「レシピアクセス数ランキング」で美味しいレシピやみんなのおすすめレシピがすぐに見つかる！自慢の料理のレパートリーが増えより一層料理が楽しくなる！</p>
           </div>
-          <div class="ps_features_column">
-            <h4 class="ps_features_subheading">1000件のレシピが保存可能に！</h4>
-            <p class="ps_features_paragraph">お気に入りのレシピを保存できる件数が1000件に容量アップ。気になるレシピを容量を気にせず、どんどん保存が可能に！</p>
+          <div class="feature-column-2">
+            <h4 class="feature-column-headline">1000件のレシピが保存可能に！</h4>
+            <p class="feature-column-text">お気に入りのレシピを保存できる件数が1000件に容量アップ。気になるレシピを容量を気にせず、どんどん保存が可能に！</p>
           </div>
         </div>
-      </div>
-      <div class="ps_features_table">
-        <table class="table_basic">
-          <tr>
-            <th class="title"></th>
-            <th class="free_user">無料会員</th>
-            <th class="ps_user">プレミアム会員</th>
+        <table class="features-table">
+          <tr class="table-row-4">
+            <th class="table-headline"></th>
+            <th class="table-headline">無料会員</th>
+            <th class="table-headline">プレミアム会員</th>
           </tr>
-          <tr>
-            <th class="title">大人気レシピがわかる「人気順検索」</th>
+          <tr class="table-row-4">
+            <th class="table-headline">大人気レシピがわかる「人気順ランキング」</th>
             <td class="free">✖️</td>
             <td class="ps">◯</td>
           </tr>
-          <tr>
-            <th class="title">マイレシピにお気に入り保存</th>
+          <tr class="table-row-4">
+            <th class="table-headline">マイレシピにお気に入り保存</th>
             <td class="free">20件まで</td>
             <td class="ps">1000件まで</td>
           </tr>
-          <tr>
-            <th class="title">人気レシピアクセス数ランキング</th>
+          <tr class="table-row-4">
+            <th class="table-headline">人気レシピアクセス数ランキング</th>
             <td class="free">✖️</td>
             <td class="ps">◯</td>
           </tr>
         </table>
       </div>
-    </div>
-  </section>
+    </section>
   @endsection
+
+  @include('layouts.footer.first')

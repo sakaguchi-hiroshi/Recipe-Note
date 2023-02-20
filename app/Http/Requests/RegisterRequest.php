@@ -30,6 +30,7 @@ class RegisterRequest extends FormRequest
             'password_confirmation' => ['required'],
         ];
     }
+    
 
     public function attributes()
     {

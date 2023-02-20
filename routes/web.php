@@ -20,12 +20,13 @@ use App\Http\Controllers\ManagementController;
 |
 */
 
+// Auth::routes(['verify' => true]);
+
 Route::get('/', [RecipeNoteController::class, 'index'])->name('recipenotes.index');
 
 Route::get('/services/premium', [RecipeNoteController::class, 'showPremiumService'])->name('recipenotes.service');
 
 Route::middleware('auth')->group(function() {
-
     Route::get('/logout', [AuthController::class,'getLogout']);
 
     Route::group(['prefix' => '/myrecipes'], function() {
@@ -33,7 +34,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/add', [MyrecipeController::class, 'add']);
         Route::post('/image/delete', [MyrecipeController::class, 'imageDelete']);
         Route::post('/movie/delete', [MyrecipeController::class, 'movieDelete']);
-        Route::post('/show', [MyrecipeController::class, 'show'])->name('myrecipes.show');
+        Route::get('/show', [MyrecipeController::class, 'show'])->name('myrecipes.show');
         Route::get('/edit', [MyrecipeController::class, 'edit'])->name('myrecipes.edit');
         Route::post('/edit', [MyrecipeController::class, 'edit'])->name('myrecipes.edit');
         Route::post('/update', [MyrecipeController::class, 'update']);
@@ -42,26 +43,31 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::group(['prefix' => '/posts'], function() {
+        Route::get('/bookmark/order', [PostController::class, 'showBookmarkOrder'])->name('posts.orders.bookmark');
+        Route::get('/access/order', [PostController::class, 'showAccessOrder'])->name('posts.orders.access');
         Route::get('/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
         Route::post('/confirm', [PostController::class, 'confirm'])->name('posts.confirm');
         Route::post('/add', [PostController::class, 'add']);
         Route::post('/delete', [PostController::class, 'delete']);
-        Route::get('/bookmark/order', [PostController::class, 'showBookmarkOrder'])->name('posts.orders.bookmark');
-        Route::get('/access/order', [PostController::class, 'showAccessOrder']);
         Route::get('/{value}', [PostController::class, 'index'])->name('posts.post');
     });
 
     Route::post('/bookmarks/bookmark', [BookmarkController::class, 'bookmark']);
     Route::get('/reports/form', [ReportController::class, 'showform'])->name('reports.form');
-    Route::post('/reports/form', [ReportController::class, 'showform'])->name('reports.form');
     Route::post('/reports/add', [ReportController::class, 'add']);
-});
-Route::group(['prefix' => '/managements'], function() {
-    Route::get('', [ManagementController::class, 'index'])->name('managements.manage');
-    Route::get('/more', [ManagementController::class, 'getMore']);
-//     Route::get('/post', [ManagementController::class, 'showPost']);
-//     Route::post('/post', [ManagementController::class, 'searchPost']);
-//     Route::post('/post/delete', [ManagementController::class, 'deletePost']);
+
+    Route::group(['prefix' => '/managements'], function() {
+        Route::group(['middleware' => ['auth', 'can:manager_only']], function() {
+            Route::get('', [ManagementController::class, 'index'])->name('managements.manage');
+            Route::post('', [ManagementController::class, 'index'])->name('managements.manage');
+            Route::get('/show/user/info', [ManagementController::class, 'showUser'])->name('managements.user_info');
+            Route::post('/user/delete', [ManagementController::class, 'userDelete']);
+            Route::get('/show/user/post', [ManagementController::class, 'showPost'])->name('managements.user_post');
+            Route::post('/user/post/delete', [ManagementController::class, 'postDelete']);
+        });
+    });
+    // Route::middleware('verified')->group(function() {
+    // });
 });
 
 Route::get('/register', [AuthController::class,'getRegister']);

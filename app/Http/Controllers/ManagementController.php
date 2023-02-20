@@ -9,30 +9,49 @@ use App\Models\Myrecipe_Colection;
 
 class ManagementController extends Controller
 {
-    public function index(Request $request)
+    public function index(User $user, Request $request)
     {
-        return view('managements.manage');
-    }
-    
-    public function getMore(Request $request)
-    {
-        $indicateContent = $request->indicate_content;
-        
-        if($indicateContent == 'user') {
-            $items = User::get();
+        $items = $user->getUserAll();
+        $keyword = $request->input('keyword');
+        if($keyword) {
+            $items = $user->getSearchUser($keyword);
         }
-        
-        if($indicateContent == 'post') {
-            $items = Post::latest()->get();
-        }
-
         $param = [
-            'indicateContent' => $indicateContent,
             'items' => $items,
+            'keyword' =>$keyword,
         ];
+        return view('managements.manage', $param);
+    }
 
-        return response()->json([
-            'list' => view('managements.manage_ajax', $param)->render()
-        ]);
+    public function showUser(Request $request)
+    {
+        $item = User::find($request->user_id);
+        $posts = Post::where('user_id', $item->id)->latest()->paginate(5);
+        $param = [
+            'item' => $item,
+            'posts' => $posts,
+        ];
+        return view('managements.user_info', $param);
+    }
+
+    public function userDelete(Request $request)
+    {
+        $user_id = $request->user_id;
+        User::find($user_id)->delete();
+        return redirect()->route('managements.manage');
+    }
+
+    public function showPost(Request $request)
+    {
+        $post_id = $request->post_id;
+        $post = Post::find($post_id);
+        return view('managements.user_post', ['post' => $post]);
+    }
+
+    public function postDelete(Request $request)
+    {
+        $post_id = $request->post_id;
+        Post::find($post_id)->delete();
+        return redirect()->route('managements.manage');
     }
 }

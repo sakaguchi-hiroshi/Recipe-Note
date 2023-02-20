@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\MyrecipeRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\Paginator;
 use App\Models\Image;
 use App\Models\Movie;
 use App\Models\Myrecipe_Colection;
@@ -16,27 +17,44 @@ use App\Services\RankingService;
 
 class MyrecipeController extends Controller
 {
-    public function index($value)
+    public function index(Myrecipe_colection $myrecipe_colection, Request $request, $value)
     {
         $user_id = Auth::id();
+        $keyword = $request->input('keyword');
+        $postRecipes = $myrecipe_colection->with('posts')
+        ->whereHas('posts', function($q) {
+                $q->whereExists(function ($q) {
+                    return $q;
+                });
+        });
+        $postRecipes_id = $postRecipes->pluck('id');
+        $mybookmarks_id = Bookmark::where('user_id', $user_id)->pluck('post_id');
+        $myBookmarkRecipe_id = Post::whereIn('id', $mybookmarks_id)->pluck('myrecipe__colection_id');
 
-        
-        
         if($value == 'myrecipe') {
-            $myrecipes = Myrecipe_colection::where('user_id', $user_id)->with('image', 'movie')->with('posts')->latest()->get();
+            $myrecipes = $myrecipe_colection->whereNotIn('id', $postRecipes_id)
+            ->where('user_id', $user_id)
+            ->where(function($q) use($keyword) {
+                $q->where('title', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+            })->latest()->paginate(5);
         }
-        
+        // dd($myrecipes);
         if($value == 'post') {
-            $myPostRecipes = Post::select('myrecipe__colection_id')->where('user_id', $user_id)->get();
-            $myrecipes = Myrecipe_Colection::whereIn('id', $myPostRecipes)->latest()->get();
+            $myrecipes = $postRecipes->where('user_id', $user_id)
+            ->where(function($q) use($keyword) {
+                $q->where('title', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+            })->latest()->paginate(5);
         }
 
         if($value == 'bookmark') {
-            $mybookmarks = Bookmark::select('post_id')->where('user_id', $user_id)->get();
-            $myPostRecipes = Post::select('myrecipe__colection_id')->whereIn('id', $mybookmarks)->get();
-            $myrecipes = Myrecipe_Colection::whereIn('id', $myPostRecipes)->latest()->get();
+            $myrecipes = $myrecipe_colection->whereIn('id', $myBookmarkRecipe_id)
+            ->where(function($q) use($keyword) {
+                $q->where('title', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+            })->latest()->paginate(5);
         }
-
         $params = [
             'myrecipes' => $myrecipes,
             'value' => $value,
@@ -117,12 +135,12 @@ class MyrecipeController extends Controller
             $ranking->incrementViewRanking($post->id);
             
             if($post->reports()->exists()) {
-                foreach($post->reports as $report)
                 $post = Post::withCount('bookmarks', 'reports')->find($post->id);
+                $reports = Report::where('post_id', $post->id)->latest()->get();
                 $param = [
                     'myrecipe' => $myrecipe,
                     'post' => $post,
-                    'report' => $report,
+                    'reports' => $reports,
                 ];
             }else {
                 $post = Post::withCount('bookmarks')->find($post->id);

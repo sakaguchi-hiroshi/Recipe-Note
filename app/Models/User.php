@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -82,5 +82,14 @@ class User extends Authenticatable
     public function isManager($user): bool {
         return User::where('id', $user->id)->where('permission_id', 3)->first() !== null;
     }
+
+    public function getUserAll() {
+        return User::paginate(10);
+    }
+
+    public function getSearchUser($keyword) {
+        return User::where('name', 'LIKE', '%' . $keyword . '%')->orWhere('email', 'LIKE', '%' . $keyword . '%')->paginate(10);
+    }
 }
+
 

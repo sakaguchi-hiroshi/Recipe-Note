@@ -1,99 +1,117 @@
 @extends('layouts.app')
   @section('title', 'Recipe詳細画面')
+  @section('pageCss')
+    <link rel="stylesheet" href="{{ asset('/assets/css/myrecipes/show.css')}}">
+  @endsection
+  @include('layouts.header.first')
+  @include('layouts.header.second')
   @section('main')
-  <section class="contents">
-      <div class="box">
-        <div class="head_container">
-          <h2 class="head_container_title"><a href="{{ route('myrecipes.myrecipe', ['value' => 'myrecipe']) }}" class="mr_link">マイレシピ</a></h2>
-        </div>
-        <div class="main_container">
-          <div class="main_contents">
-            <div class="recipe_pictures">
-              @if(isset($myrecipe->image))
-              <div class="image-area">
-                <img src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
-              </div>
-              @endif
-              @if(isset($myrecipe->movie))
-              <div class="movie-area">
-                <video preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
-              </div>
-              @endif
+    <h2 class="main-headline">Recipe詳細</h2>
+    <section class="main-section">
+      <div class="first-container">
+        <ul class="first-container-list">
+          <li class="first-container-list-item">
+            <a class="wr-link" href="{{ route('myrecipes.form')}}">レシピを書く</a>
+          </li>
+          <li class="first-container-list-item">
+            <a class="bm-link" href="{{ route('myrecipes.myrecipe', ['value' => 'bookmark']) }}">お気に入りレシピ</a>
+          </li>
+          <li class="first-container-list-item">
+            <a class="mr-link" href="{{ route('myrecipes.myrecipe', ['value' => 'myrecipe']) }}">自分の書いたレシピ</a>
+          </li>
+          <li class="first-container-list-item">
+            <a class="mp-link" href="{{ route('myrecipes.myrecipe', ['value' => 'post']) }}">自分の投稿レシピ</a>
+          </li>
+        </ul>
+      </div>
+      <div class="second-container">
+        <figure class="recipe-figure">
+          @if(isset($myrecipe->image))
+            <div class="recipe-figure-item">
+              <img class="recipe-figure-image" src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
             </div>
-            <div class="recipe_texts">
-              <p class="recipe-title">
-                {{$myrecipe->title}}
-              </p>
-              @if(isset($myrecipe->url))
+          @endif
+          @if(isset($myrecipe->movie))
+            <div class="recipe-figure-item">
+              <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
+            </div>
+          @endif
+          <figcaption class="recipe-figure-caption">
+            <h3 class="recipe-headline">{{$myrecipe->title}}</h3>
+            @if(isset($myrecipe->url))
               <p class="recipe-url">
                 <a href="{{$myrecipe->url}}" target="_blank" rel="noopener noreferrer">
                   {{$myrecipe->url}}
                 </a>
               </p>
-              @endif
-              @if(isset($myrecipe->recipe))
-              <p class="recipe">
+            @endif
+            @if(isset($myrecipe->recipe))
+              <p class="recipe-caption">
                 {{$myrecipe->recipe}}
               </p>
-              @endif
-            </div>
-            @if(isset($post) && !($post->user_id == Auth::id()))
-            @if(!$post->isLikedBy(Auth::user()))
-            <span class="likes">
-              <i class="fa-solid fa-heart like-toggle" data-post-id="{{$post->id}}"></i>
-              <span class="like-counter">{{$post->bookmarks_count}}</span>
-            </span>
-            @elseif($post->isLikedBy(Auth::user()))
-            <span class="likes">
-              <i class="fa-solid fa-heart like-toggle liked" data-post-id="{{$post->id}}"></i>
-              <span class="like-counter">{{$post->bookmarks_count}}</span>
-            </span>
             @endif
-            @elseif(isset($post))
+          </figcaption>
+        </figure>
+        <div class="bookmark-container">
+          @if(isset($post) && !($post->user_id == Auth::id()))
+            @if(!$post->isLikedBy(Auth::user()))
+              <span class="likes">
+                <i class="fa-solid fa-heart like-toggle" data-post-id="{{$post->id}}"></i>
+                <span class="like-counter">{{$post->bookmarks_count}}</span>
+              </span>
+            @elseif($post->isLikedBy(Auth::user()))
+              <span class="likes">
+                <i class="fa-solid fa-heart like-toggle liked" data-post-id="{{$post->id}}"></i>
+                <span class="like-counter">{{$post->bookmarks_count}}</span>
+              </span>
+            @endif
+          @elseif(isset($post))
             <span class="likes">
               <i class="fa-solid fa-heart liked"></i>
               <span class="like-counter">{{$post->bookmarks_count}}</span>
             </span>
-            @endif
-            @if(isset($report))
-            <div class="recipe-report">
-              <div class="report-header">
-                <h3 class="report-header-title">レポート</h3>
-                <div class="report-count">
-                  <span>{{$post->reports_count}}</span>件
-                </div>
-              </div>
-              <div class="report-content">
-                <div class="report-item-wrapper">
-                  <div class="report-item">
-                    <form id="reportform" name="reportform" action="{{ route('reports.form')}}" method="post">
-                      @csrf
-                      <input type="hidden" name="post_id" value="{{$post->id}}">
-                      @if(isset($report->image))
-                      <div class="report-image-area">
-                        <img src="{{ asset('storage/'.$report->image->path)}}" alt="レポートレシピの画像">
-                      </div>
-                      @else
-                      <div class="report-coment-area">
-                        <p class="report-date-time">
-                          {{ $report->created_at->format('Y年m月d日 H:i:s')}}
-                        </p>
-                        <p class="report-coment">
-                          {{$report->coment}}
-                        </p>
-                      </div>
-                      @endif
-                      @if(!($post->user_id == Auth::id()))
-                      <button type="submit">レポートを書く</button>
-                      @endif
-                    </form>
-                  </div>
-                </div>
+          @endif
+        </div>
+        <div class="report-container">
+          @if(isset($reports))
+            <div class="report-container-header">
+              <h3 class="report-container-headline">レポート</h3>
+              <div class="report-count">
+                <span class="count">{{$post->reports_count}}</span>件
               </div>
             </div>
-            @endif
-          </div>
+            <div class="report-item-wrapper">
+              @foreach($reports as $report)
+                <div class="report-item">
+                  @if(isset($report->image))
+                    <div class="report-image-area">
+                      <img class="report-image" src="{{ asset('storage/'.$report->image->path)}}" alt="レポートレシピの画像">
+                    </div>
+                  @endif
+                  <div class="report-coment-area">
+                    <p class="report-date-time">
+                      {{ $report->created_at->format('Y年m月d日 H:i:s')}}
+                    </p>
+                    <p class="report-coment">
+                      {{$report->coment}}
+                    </p>
+                  </div>
+                </div>
+              @endforeach
+            </div>
+          @endif
+          @if(!($post->user_id == Auth::id()))
+            <form class="recipe-form" action="{{ route('reports.form')}}" method="get">
+              @csrf
+              <input type="hidden" name="post_id" value="{{$post->id}}">
+              <button type="submit">レポートを書く</button>
+            </form>
+          @endif
         </div>
       </div>
     </section>
   @endsection
+
+  @include('layouts.footer.first')
+
+  <script src="{{ mix('js/bookmark.js') }}"></script>
