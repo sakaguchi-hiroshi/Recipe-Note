@@ -9,7 +9,20 @@
     <section class="main-section">
       <h2 class="section-headline">プレミアムサービス</h2>
       <div class="regist-btn">
-        <a href="" class="regist-link">登録する</a>
+        <form action="{{ asset('pay') }}" method="POST">
+            {{ csrf_field() }}
+          <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ env('STRIPE_KEY') }}"
+              data-amount="200"
+              data-name="Stripe決済デモ"
+              data-label="登録をする"
+              data-description="これはデモ決済です"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto"
+              data-currency="JPY">
+          </script>
+        </form>
       </div>
       <div class="features">
         <h3 class="features-headline">プレミアムサービスでできること</h3>

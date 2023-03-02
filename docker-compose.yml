@@ -4,9 +4,9 @@ services:
   php:
     build: .
     volumes:
-     - ./src:/var/www/html
+      - ./src:/var/www/html
     ports:
-     - '8000:8000'
+      - '8000:8000'
   mysql:
     platform: linux/x86_64 
     image: mysql:5.7

@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ManagementController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +25,12 @@ use App\Http\Controllers\ManagementController;
 
 Route::get('/', [RecipeNoteController::class, 'index'])->name('recipenotes.index');
 
-Route::get('/services/premium', [RecipeNoteController::class, 'showPremiumService'])->name('recipenotes.service');
 
 Route::middleware('auth')->group(function() {
     Route::get('/logout', [AuthController::class,'getLogout']);
+
+    Route::get('/services/premium', [RecipeNoteController::class, 'showPremiumService'])->name('recipenotes.service');
+    Route::post('/pay', [PaymentController::class, 'pay']);
 
     Route::group(['prefix' => '/myrecipes'], function() {
         Route::get('/form', [MyrecipeController::class, 'showForm'])->name('myrecipes.form');

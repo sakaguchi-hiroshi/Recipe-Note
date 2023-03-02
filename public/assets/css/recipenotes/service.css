@@ -43,6 +43,7 @@ main
 }
 .regist-btn {
   margin-bottom: 5rem;
+  text-align: center;
 }
 .regist-link {
   display: block;
