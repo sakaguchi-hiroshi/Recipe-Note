@@ -36,7 +36,7 @@
           <input type="hidden" name="recipe_id" value="{{$post->id}}">
           <figure class="recipe-figure">
             <button class="recipe-figure-btn" type="submit">
-              <img class="recipe-figure-image" src="{{ asset('storage/'.$post->image->path)}}" alt="レシピの画像">
+              <img class="recipe-figure-image" src="{{ $post->image->path }}" alt="レシピの画像">
             </button>
             <figcaption class="recipe-figure-caption">
               <button class="recipe-figure-btn" type="submit" form="show-form">

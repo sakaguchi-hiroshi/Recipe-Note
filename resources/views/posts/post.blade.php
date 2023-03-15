@@ -37,7 +37,7 @@
                 @csrf
                 <input type="hidden" name="recipe_id" value="{{$post->myrecipe_colection->id}}">
                 <button type="submit" class="recipe-figure-btn">
-                  <img class="recipe-figure-image " src="{{ asset('storage/'.$post->myrecipe_colection->image->path)}}" alt="レシピの画像">
+                  <img class="recipe-figure-image " src="{{ $post->myrecipe_colection->image->path }}" alt="レシピの画像">
                 </button>
               </form>
             @endif
@@ -46,7 +46,7 @@
                 @csrf
                 <input type="hidden" name="recipe_id" value="{{$post->myrecipe_colection->id}}">
                 <button type="submit" class="recipe-figure-btn" form="show-form">
-                  <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$post->myrecipe_colection->movie->path)}}" alt="レシピの動画"></video>
+                  <video class="recipe-figure-movie" preload controls src="{{ $post->myrecipe_colection->movie->path }}" alt="レシピの動画"></video>
                 </button>
               </form>
             @endif

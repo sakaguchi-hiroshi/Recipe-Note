@@ -40,7 +40,7 @@
               @csrf
               <input type="hidden" name="recipe_id" value="{{$post->myrecipe_colection->id}}">
               <button type="submit" class="recipe-figure-btn">
-                <img class="recipe-figure-image" src="{{ asset('storage/'.$post->myrecipe_colection->image->path)}}" alt="レシピの画像">
+                <img class="recipe-figure-image" src="{{ $post->myrecipe_colection->image->path }}" alt="レシピの画像">
               </button>
             </form>
             <figcaption class="recipe-figure-caption">

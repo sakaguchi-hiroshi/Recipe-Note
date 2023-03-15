@@ -28,12 +28,12 @@
         <figure class="recipe-figure">
           @if(isset($myrecipe->image))
             <div class="recipe-figure-item">
-              <img class="recipe-figure-image" src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
+              <img class="recipe-figure-image" src="{{ $myrecipe->image->path }}" alt="レシピの画像">
             </div>
           @endif
           @if(isset($myrecipe->movie))
             <div class="recipe-figure-item">
-              <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
+              <video class="recipe-figure-movie" preload controls src="{{ $myrecipe->movie->path }}" alt="レシピの動画"></video>
             </div>
           @endif
           <figcaption class="recipe-figure-caption">
@@ -85,7 +85,7 @@
                 <div class="report-item">
                   @if(isset($report->image))
                     <div class="report-image-area">
-                      <img class="report-image" src="{{ asset('storage/'.$report->image->path)}}" alt="レポートレシピの画像">
+                      <img class="report-image" src="{{ $report->image->path }}" alt="レポートレシピの画像">
                     </div>
                   @endif
                   <div class="report-coment-area">
@@ -100,7 +100,7 @@
               @endforeach
             </div>
           @endif
-          @if(!($post->user_id == Auth::id()))
+          @if(isset($post) && !($post->user_id == Auth::id()))
             <form class="recipe-form" action="{{ route('reports.form')}}" method="get">
               @csrf
               <input type="hidden" name="post_id" value="{{$post->id}}">

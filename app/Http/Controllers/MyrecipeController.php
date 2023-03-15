@@ -39,7 +39,7 @@ class MyrecipeController extends Controller
                         ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
             })->latest()->paginate(5);
         }
-        // dd($myrecipes);
+
         if($value == 'post') {
             $myrecipes = $postRecipes->where('user_id', $user_id)
             ->where(function($q) use($keyword) {
@@ -71,8 +71,8 @@ class MyrecipeController extends Controller
     public function add(MyrecipeRequest $request)
     {
         if(isset($request->image)) {
-            $image = $request->file('image');
-            $img_path = $image->store('images', 'public');
+	    $upload_image = Storage::disk('s3')->putFile('/images', $request->file('image'), 'public');
+	    $img_path = Storage::disk('s3')->url($upload_image);
             
             $image_id = Image::create([
                 'user_id' => $request->user_id,
@@ -84,8 +84,8 @@ class MyrecipeController extends Controller
         }
 
         if(isset($request->movie)) {
-            $movie = $request->file('movie');
-            $movie_path = $movie->store('movies', 'public');
+	    $upload_movie = Storage::disk('s3')->putFile('/movies', $request->file('movie'), 'public');
+	    $movie_path = Storage::disk('s3')->url($upload_movie);
             
             $movie_id = Movie::create([
                 'user_id' => $request->user_id,
@@ -109,7 +109,8 @@ class MyrecipeController extends Controller
 
     public function imageDelete(Request $request)
     {
-        \Storage::disk('public')->delete($request->image_path);
+	$image = basename($request->image_path);
+        Storage::disk('s3')->delete('/images', $image);
         Image::find($request->image_id)->delete();
 
         return redirect(route('myrecipes.myrecipe', ['value' => 'myrecipe']));
@@ -117,7 +118,8 @@ class MyrecipeController extends Controller
 
     public function movieDelete(Request $request)
     {
-        \Storage::disk('public')->delete($request->movie_path);
+	$movie = basename($request->movie_path);
+        Storage::disk('s3')->delete('movies', $movie);
         Movie::find($request->movie_id)->delete();
 
         return redirect(route('myrecipes.myrecipe', ['value' => 'myrecipe']));
@@ -151,7 +153,7 @@ class MyrecipeController extends Controller
             }
         }else {
             $param = [
-                'myrecipe' => $myrecipe,
+		'myrecipe' => $myrecipe,
             ];
         }
         return view('myrecipes.show', $param);
@@ -160,12 +162,14 @@ class MyrecipeController extends Controller
     public function delete(Request $request)
     {
         $myrecipe = Myrecipe_Colection::where('id', $request->recipe_id)->first();
-        if($myrecipe->image) {
-            \Storage::disk('public')->delete($myrecipe->image->path);
+	if($myrecipe->image) {
+            $image = basename($myrecipe->image->path);
+            Storage::disk('s3')->delete('/images', $image);
             $myrecipe->image->delete();
         }
-        if($myrecipe->movie) {
-            \Storage::disk('public')->delete($myrecipe->movie->path);
+	if($myrecipe->movie) {
+	    $movie = basename($myrecipe->movie->path);
+            Storage::disk('s3')->delete('/movies', $movie);
             $myrecipe->movie->delete();
         }
         $myrecipe->delete();
@@ -193,25 +197,25 @@ class MyrecipeController extends Controller
             if(isset($request->old_image_id)) {
                 $image_id = $request->old_image_id;
             }elseif(is_null($request->old_image_id)) {
-                dd($request);
                 $image_id = null;
             }
         }
         
         if(isset($request->image)) {
-            if(isset($request->old_image_id)) {
-                \Storage::disk('public')->delete($request->old_image_path);
-                $image = $request->file('image');
-                $image_path = $image->store('images', 'public');
+	    if(isset($request->old_image_id)) {
+                $old_image_path = basename($request->old_image_path);
+                Storage::disk('s3')->delete('/images', $old_image_path);
+		$image = Storage::disk('s3')->putFile('/images', $request->file('image'), 'public');
+                $image_path = Storage::disk('s3')->url($image);
                 $old_image = Image::find($request->old_image_id)->update([
                     'name' => $request->title,
                     'path' => $image_path,
                 ]);
                 $image_id = Image::where('id', $request->old_image_id)->value('id');
 
-            }else {
-                $image = $request->file('image');
-                $image_path = $image->store('images', 'public');
+	    }else {
+		$image = Storage::disk('s3')->putFile('/images', $request->file('image'), 'public');
+                $image_path = Storage::disk('s3')->url($image);
                 $image_id = Image::create([
                     'user_id' => $user_id,
                     'name' => $request->title,
@@ -230,17 +234,18 @@ class MyrecipeController extends Controller
         
         if(isset($request->movie)) {
             if(isset($request->old_movie_id)) {
-                \Storage::disk('public')->delete($request->old_movie_path);
-                $movie = $request->file('movie');
-                $movie_path = $movie->store('movies', 'public');
+		$old_movie_path = basename($request->old_movie_path);
+                Storage::disk('s3')->delete('/movies', $old_movie_path);
+                $movie = Storage::disk('s3')->putFile('/movies', $request->file('movie'), 'public');
+                $movie_path = Storage::disk('s3')->url($movie);
                 $old_movie = Movie::find($request->old_movie_id)->update([
                     'name' => $request->title,
                     'path' => $movie_path,
                 ]);
                 $movie_id = Movie::where('id', $request->old_movie_id)->value('id');
             }else {
-                $movie = $request->file('movie');
-                $movie_path = $movie->store('movies', 'public');
+                $movie = Storage::disk('s3')->putFile('/movies', $request->file('movie'), 'public');
+                $movie_path = Storage::disk('s3')->url($movie);
                 $movie_id = Movie::create([
                     'user_id' => $user_id,
                     'name' => $request->title,

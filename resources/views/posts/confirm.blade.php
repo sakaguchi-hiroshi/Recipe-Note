@@ -13,10 +13,10 @@
       @endforeach
       <figure class="recipe-figure">
         @if(isset($myrecipe->image))
-          <img class="recipe-figure-image" src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
+          <img class="recipe-figure-image" src="{{ $myrecipe->image->path }}" alt="レシピの画像">
         @endif
         @if(isset($myrecipe->movie))
-          <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
+          <video class="recipe-figure-movie" preload controls src="{{ $myrecipe->movie->path }}" alt="レシピの動画"></video>
         @endif
         <figcaption class="recipe-figure-caption">
           <h3 class="recipe-headline">{{$myrecipe->title}}</h3>

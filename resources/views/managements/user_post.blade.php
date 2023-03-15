@@ -9,9 +9,9 @@
   <section class="main-section">
     <h2 class="main-section-headline">投稿詳細</h2>
     <figure class="recipe-figure">
-      <img class="recipe-figure-image" src="{{ asset('storage/'.$post->myrecipe_colection->image->path)}}" alt="レシピの画像">
+      <img class="recipe-figure-image" src="{{ $post->myrecipe_colection->image->path }}" alt="レシピの画像">
       @if(isset($post->myrecipe_colection->movie))
-        <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$post->myrecipe_colection->movie->path)}}" alt="レシピの動画"></video>
+        <video class="recipe-figure-movie" preload controls src="{{ $post->myrecipe_colection->movie->path }}" alt="レシピの動画"></video>
       @endif
       <figcaption class="recipe-figure-caption">
         <h3 class="recipe-headline">{{$post->myrecipe_colection->title}}</h3>

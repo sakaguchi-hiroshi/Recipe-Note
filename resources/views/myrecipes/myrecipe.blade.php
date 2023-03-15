@@ -38,7 +38,7 @@
                 @csrf
                 <input type="hidden" name="recipe_id" value="{{$myrecipe->id}}">
                 <button type="submit" class="recipe-figure-btn">
-                  <img class="recipe-figure-image" src="{{ asset('storage/'.$myrecipe->image->path)}}" alt="レシピの画像">
+                  <img class="recipe-figure-image" src="{{ $myrecipe->image->path }}" alt="レシピの画像">
                 </button>
               </form>
             @else
@@ -46,7 +46,7 @@
             @endif
             @if(isset($myrecipe->movie))
               <button class="recipe-figure-btn" type="submit" form="show-form">
-                <video class="recipe-figure-movie" preload controls src="{{ asset('storage/'.$myrecipe->movie->path)}}" alt="レシピの動画"></video>
+                <video class="recipe-figure-movie" preload controls src="{{ $myrecipe->movie->path }}" alt="レシピの動画"></video>
               </button>
             @endif
             <figcaption class="recipe-figure-caption">

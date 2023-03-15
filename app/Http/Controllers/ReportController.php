@@ -24,8 +24,8 @@ class ReportController extends Controller
     public function add(ReportRequest $request)
     {
         if($request->image) {
-            $image = $request->file('image');
-            $img_path = $image->store('images', 'public');
+            $image = Storage::disk('s3')->putFile('/images', $request->file('image'), 'public');
+            $img_path = Storage::disk('s3')->url($image);
             
             $image_id = Image::create([
                 'user_id' => $request->user_id,

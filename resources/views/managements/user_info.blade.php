@@ -31,7 +31,7 @@
       </table>
       @foreach($posts as $post)
       <figure class="recipe-figure">
-        <img class="recipe-figure-image" src="{{ asset('storage/'.$post->myrecipe_colection->image->path)}}" alt="レシピの画像">
+        <img class="recipe-figure-image" src="{{ $post->myrecipe_colection->image->path }}" alt="レシピの画像">
         <figcaption class="recipe-figure-caption">
           <h3 class="recipe-headline">{{$post->myrecipe_colection->title}}</h3>
           <p class="recipe-caption">
