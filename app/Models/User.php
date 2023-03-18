@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Cashier\Billable;
+use App\Models\Post;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -84,12 +85,32 @@ class User extends Authenticatable implements MustVerifyEmail
         return User::where('id', $user->id)->where('permission_id', 3)->first() !== null;
     }
 
-    public function getUserAll() {
-        return User::paginate(10);
+    public function getUser($user_id) {
+        $user = User::find($user_id);
+
+        return $user;
     }
 
-    public function getSearchUser($keyword) {
-        return User::where('name', 'LIKE', '%' . $keyword . '%')->orWhere('email', 'LIKE', '%' . $keyword . '%')->paginate(10);
+    public function getIndexUser($keyword) {
+
+        if($keyword) {
+            $items = User::where('name', 'LIKE', '%' . $keyword . '%')->orWhere('email', 'LIKE', '%' . $keyword . '%');
+        }
+
+        return $items;
+    }
+
+    public function getShowUser($user_id) {
+        $item = User::find($user_id);
+        $posts = Post::where('user_id', $item->id);
+        
+        return array($item, $posts);
+    }
+
+    public function getShowPost($post_id) {
+        $post = Post::find($post_id);
+
+        return $post;
     }
 }
 

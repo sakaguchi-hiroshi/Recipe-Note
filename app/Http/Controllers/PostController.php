@@ -18,23 +18,7 @@ class PostController extends Controller
         $posts = $post->latest()->paginate(5);
         $keyword = $request->input('keyword');
         if($post) {
-            if($value == 'post') {
-                $posts = $post->whereHas('myrecipe_colection', function ($q) use ($keyword) {
-                    $q->where('title', 'LIKE', '%' . $keyword . '%')
-                        ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
-                })->latest()->paginate(5);
-            }else {
-                $posts = $post->with('myrecipe_colection.movie')
-                ->whereHas('myrecipe_colection.movie', function($q) {
-                    $q->whereExists(function($q){
-                        return $q;
-                    });
-                })
-                ->whereHas('myrecipe_colection', function ($q) use ($keyword) {
-                        $q->where('title', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
-                })->latest()->paginate(5);
-            }
+            $posts = $post->getIndexPosts($keyword, $value)->latest()->paginate(5);
         }
         $param = [
             'posts' => $posts,
@@ -43,13 +27,15 @@ class PostController extends Controller
         return view('posts.post', $param);
     }
 
-    public function confirm(Request $request)
+    public function confirm(Myrecipe_Colection $myrecipe_colection, Request $request)
     {
         if ($request->old()) {
-            $myrecipe = Myrecipe_Colection::where('id', $request->old('recipe_id'))->with('image', 'movie')->first();
+            $id = $request->old('recipe_id');
+            $myrecipe = $myrecipe_colection->getMyrecipe($id);
             return view('posts.confirm', ['myrecipe' => $myrecipe]);
         }elseif($request->recipe_id) {
-            $myrecipe = Myrecipe_Colection::where('id', $request->recipe_id)->with('image', 'movie')->first();
+            $id = $request->recipe_id;
+            $myrecipe = $myrecipe_colection->getMyrecipe($id);
             return view('posts.confirm', ['myrecipe' => $myrecipe]);
         }else {
             return redirect(route('myrecipes.myrecipe', ['value' => 'myrecipe']));
@@ -67,9 +53,10 @@ class PostController extends Controller
 
     }
 
-    public function delete(Request $request)
+    public function delete(Post $post, Request $request)
     {
-        Post::where('myrecipe__colection_id', $request->recipe_id)->delete();
+        $recipe_id = $request->recipe_id;
+        $post->deletePost($recipe_id)->delete();
         return redirect(route('myrecipes.myrecipe', ['value' => 'post']));
     }
 
@@ -80,12 +67,7 @@ class PostController extends Controller
         }
         if(isset($post)){
             $keyword = $request->input('keyword');
-            $posts = $post->withCount('bookmarks')
-            ->whereHas('myrecipe_colection', function($q) use($keyword) {
-                $q->where('title', 'LIKE', '%' . $keyword . '%')
-                    ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
-            })
-            ->orderBy('bookmarks_count', 'desc')->paginate(5);
+            $posts = $post->getBookmarkOrderPosts($keyword)->paginate(5);
             return view('posts.orders.bookmark', ['posts' => $posts]);
         }
     }
@@ -99,11 +81,7 @@ class PostController extends Controller
             $keyword = $request->input('keyword');
             $ranking = new RankingService;
             $results = $ranking->getRankingAll();
-            $post_recipe_rankings = $post->getPostRecipeRanking($results)
-            ->whereHas('myrecipe_colection', function($q) use($keyword) {
-                    $q->where('title', 'LIKE', '%' . $keyword . '%')
-                            ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
-                })->paginate(5);
+            $post_recipe_rankings = $post->getPostRecipeRanking($results, $keyword)->paginate(5);
             return view('posts.orders.access', ['post_recipe_rankings' => $post_recipe_rankings]);
         }
     }

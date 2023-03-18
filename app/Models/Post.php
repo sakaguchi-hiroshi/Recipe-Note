@@ -33,16 +33,60 @@ class Post extends Model
         return $this->hasMany('App\Models\Report', 'post_id');
     }
 
+    public function getIndexPosts($keyword, $value) {
+
+        if($value == 'post') {
+            $posts = Post::whereHas('myrecipe_colection', function ($q) use ($keyword) {
+                $q->where('title', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+            });
+        }else {
+            $posts = Post::with('myrecipe_colection.movie')
+            ->whereHas('myrecipe_colection.movie', function($q) {
+                $q->whereExists(function($q){
+                    return $q;
+                });
+            })
+            ->whereHas('myrecipe_colection', function ($q) use ($keyword) {
+                    $q->where('title', 'LIKE', '%' . $keyword . '%')
+                        ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+            });
+        }
+
+        return $posts;
+    }
+
+    public function deletePost($recipe_id) {
+        return Post::where('myrecipe__colection_id', $recipe_id);
+    }
+
     public function isLikedBy($user): bool {
         return Bookmark::where('user_id', $user->id)->where('post_id', $this->id)->first() !== null;
     }
 
-    public function getPostRecipeRanking($results)
+    public function getBookmarkOrderPosts($keyword) {
+        $posts = Post::withCount('bookmarks')
+        ->whereHas('myrecipe_colection', function($q) use($keyword) {
+            $q->where('title', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+        })
+        ->orderBy('bookmarks_count', 'desc');
+
+        return $posts;
+    }
+
+    public function getPostRecipeRanking($results, $keyword)
     {
         $post_recipe_ids = array_keys($results);
         $ids_order = implode(',', $post_recipe_ids);
         $post_recipe_ranking = $this->whereIn('id', $post_recipe_ids)
-                                    ->orderByRaw("FIELD(id, $ids_order)");
+        ->orderByRaw("FIELD(id, $ids_order)")
+        ->whereHas('myrecipe_colection', function($q) use($keyword) {
+            $q->where('title', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('recipe', 'LIKE', '%' . $keyword . '%');
+        });
+        
         return $post_recipe_ranking;
     }
+
 }
