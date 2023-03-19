@@ -91,7 +91,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $user;
     }
 
-    public function getIndexUser($keyword) {
+    public function getIndexUser($keyword, $user) {
+
+	$items = $user;
 
         if($keyword) {
             $items = User::where('name', 'LIKE', '%' . $keyword . '%')->orWhere('email', 'LIKE', '%' . $keyword . '%');

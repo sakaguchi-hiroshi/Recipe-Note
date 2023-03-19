@@ -48,13 +48,26 @@ class MyrecipeController extends Controller
             ])->id;
         } else {
             $image_id = null;
+	}
+
+	if(!empty($movie)) {
+            $upload_movie = Storage::disk('s3')->putFile('/movies', $movie, 'public');
+            $movie_path = Storage::disk('s3')->url($upload_movie);
+
+            $movie_id = Movie::create([
+                'user_id' => $user_id,
+                'name' => $title,
+                'path' => $movie_path,
+            ])->id;
+        } else {
+            $movie_id = null;
         }
 
         Myrecipe_Colection::create([
             'user_id' => $request->user_id,
             'image_id' => $image_id,
             'movie_id' => $movie_id,
-            'title' => $name,
+            'title' => $title,
             'recipe' => $request->recipe,
             'url' => $request->url,
         ]);
@@ -64,7 +77,7 @@ class MyrecipeController extends Controller
     public function imageDelete(Request $request)
     {
 	    $image = basename($request->image_path);
-        Storage::disk('s3')->delete('/images', $image);
+        Storage::disk('s3')->delete('images/'.$image);
         Image::find($request->image_id)->delete();
 
         return redirect(route('myrecipes.myrecipe', ['value' => 'myrecipe']));
@@ -73,7 +86,7 @@ class MyrecipeController extends Controller
     public function movieDelete(Request $request)
     {
 	    $movie = basename($request->movie_path);
-        Storage::disk('s3')->delete('movies', $movie);
+        Storage::disk('s3')->delete('movies/'.$movie);
         Movie::find($request->movie_id)->delete();
 
         return redirect(route('myrecipes.myrecipe', ['value' => 'myrecipe']));
@@ -94,13 +107,13 @@ class MyrecipeController extends Controller
         $myrecipe = $myrecipe_colection->getMyrecipe($id);
         if($myrecipe->image) {
                 $image = basename($myrecipe->image->path);
-                Storage::disk('s3')->delete('/images', $image);
+                Storage::disk('s3')->delete('images/'.$image);
                 $myrecipe->image->delete();
         }
 
         if($myrecipe->movie) {
                 $movie = basename($myrecipe->movie->path);
-                Storage::disk('s3')->delete('/movies', $movie);
+                Storage::disk('s3')->delete('movies/'.$movie);
                 $myrecipe->movie->delete();
         }
 
@@ -138,7 +151,7 @@ class MyrecipeController extends Controller
         if(isset($request->image)) {
             if(isset($request->old_image_id)) {
                 $old_image_path = basename($request->old_image_path);
-                Storage::disk('s3')->delete('/images', $old_image_path);
+                Storage::disk('s3')->delete('images/'.$old_image_path);
                 $image = Storage::disk('s3')->putFile('/images', $request->file('image'), 'public');
                 $image_path = Storage::disk('s3')->url($image);
                 $update_image = Image::find($request->old_image_id)->update([
@@ -168,7 +181,7 @@ class MyrecipeController extends Controller
         if(isset($request->movie)) {
             if(isset($request->old_movie_id)) {
                 $old_movie_path = basename($request->old_movie_path);
-                Storage::disk('s3')->delete('/movies', $old_movie_path);
+                Storage::disk('s3')->delete('movies/'.$old_movie_path);
                 $movie = Storage::disk('s3')->putFile('/movies', $request->file('movie'), 'public');
                 $movie_path = Storage::disk('s3')->url($movie);
                 $update_movie = Movie::find($request->old_movie_id)->update([

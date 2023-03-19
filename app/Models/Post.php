@@ -22,7 +22,7 @@ class Post extends Model
     }
 
     public function myrecipe_colection(){
-        return $this->belongsTo('App\Models\Myrecipe_colection', 'myrecipe__colection_id');
+        return $this->belongsTo('App\Models\Myrecipe_Colection', 'myrecipe__colection_id');
     }
 
     public function bookmarks(){

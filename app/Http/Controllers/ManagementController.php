@@ -9,9 +9,8 @@ class ManagementController extends Controller
 {
     public function index(User $user, Request $request)
     {
-        $items = $user->latest()->paginate(10);
         $keyword = $request->input('keyword');
-        $items = $user->getIndexUser($keyword)->latest()->paginate(10);
+        $items = $user->getIndexUser($keyword, $user)->latest()->paginate(10);
         $param = [
             'items' => $items,
             'keyword' =>$keyword,
