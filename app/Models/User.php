@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'permission_id',
     ];
 
     protected $guarded = ['id'];
@@ -50,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name' => 'required',
         'email' => 'required',
         'password' => 'required',
-        'role' => 'required',
+        'permission_id' => 'required',
     );
 
     public function images(){

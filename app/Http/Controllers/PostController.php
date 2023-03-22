@@ -56,7 +56,7 @@ class PostController extends Controller
     public function delete(Post $post, Request $request)
     {
         $recipe_id = $request->recipe_id;
-        $post->deletePost($recipe_id)->delete();
+        $post->getPostRecipe($recipe_id)->delete();
         return redirect(route('myrecipes.myrecipe', ['value' => 'post']));
     }
 

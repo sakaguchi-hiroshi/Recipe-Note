@@ -16,22 +16,22 @@ class UsersTableSeeder extends Seeder
     {
         $param = [
             'permission_id' => 1,
-            'name' => '坂口博史',
-            'email' => 'nohoho0320@gmail.com',
+            'name' => 'user01',
+            'email' => 'user01@gmail.com',
             'password' => bcrypt('A712247a'),
         ];
         User::create($param);
         $param = [
             'permission_id' => 2,
-            'name' => '坂口博史',
-            'email' => 'nohoho0320@icloud.com',
+            'name' => 'user02',
+            'email' => 'user02@gmail.com',
             'password' => bcrypt('A712247a'),
         ];
         User::create($param);
         $param = [
             'permission_id' => 3,
-            'name' => '坂口博史',
-            'email' => 'nohoho0320@example.com',
+            'name' => 'user03',
+            'email' => 'user03@gmail.com',
             'password' => bcrypt('A712247a'),
         ];
         User::create($param);

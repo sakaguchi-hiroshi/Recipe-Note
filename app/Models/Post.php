@@ -56,7 +56,7 @@ class Post extends Model
         return $posts;
     }
 
-    public function deletePost($recipe_id) {
+    public function getPostRecipe($recipe_id) {
         return Post::where('myrecipe__colection_id', $recipe_id);
     }
 
